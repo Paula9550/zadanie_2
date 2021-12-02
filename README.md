@@ -1,5 +1,6 @@
 # zadanie_2
 ZADANIE NR 2 Budowa środowiska do rozwoju i uruchamiania aplikacji webowych.
+
 •	Polecenie uruchamiające stack (w trybie „w tle”):
  ![image](https://user-images.githubusercontent.com/94685113/144508850-c2249946-e3d7-4bc7-a76e-0b4590adca36.png)
 
