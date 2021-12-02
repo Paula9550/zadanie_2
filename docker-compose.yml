@@ -1,0 +1,63 @@
+version: '3'
+services:
+  
+  #budowanie uslugi php:
+  php:
+    #obraz, z korego tworzony jest kontener:
+    image: php:8-fpm
+    #wolumeny:
+    volumes:
+      - ./public:/usr/nginx/php
+    #dolaczenie do sieci: 
+    networks:
+      - back
+  #budowanie uslugi mysql:
+  mysql:
+    #obraz, z korego tworzony jest kontener:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 'admin'
+    #wolumeny:
+    volumes:
+      - ./database:/var/lib/mysql
+    #dolaczenie do sieci: 
+    networks:
+      - back
+  #budowanie uslugi phpmyadmin
+  phpmyadmin:
+    #obraz, z korego tworzony jest kontener:
+    image: phpmyadmin/phpmyadmin:latest
+    #czekanie na uruchomienie mysql:
+    depends_on:
+      - mysql
+    #laczenie z obrazem bazy danych:
+    links:
+      - "mysql:db"
+    #mapowanie portu:
+    ports:
+      - 6001:80
+    #dolazenie do sieci: 
+    networks:
+      - back
+  #budowanie nginx:
+  nginx:
+    #obraz, z korego tworzony jest kontener:
+    image: 'nginx:latest'
+    #mapowanie portu:
+    ports:
+      - 6666:80
+    #wolumeny:
+    volumes:
+      - ./public:/usr/nginx/php
+      - ./nginx:/etc/nginx/conf.d
+    #czekanie na usluge php:
+    depends_on:
+      - php
+    #dolaczenie do sieci: 
+    networks:
+      - front
+      - back
+#utworzenie sieci:
+networks:
+  front:
+  back:
